@@ -1762,10 +1762,10 @@ function Fancytree(widget) {
 	this.$div = widget.element;
 	this.options = widget.options;
 	if( this.options ) {
-		if( $.isFunction(this.options.lazyLoad ) ) {
+		if(  $.isFunction(this.options.lazyload ) && !$.isFunction(this.options.lazyLoad) ) {
 			this.options.lazyLoad = function() {
 				FT.warn("The 'lazyload' event is deprecated since 2014-02-25. Use 'lazyLoad' (with uppercase L) instead.");
-				widget.options.lazyload.apply(this, arguments);
+				return widget.options.lazyload.apply(this, arguments);
 			};
 		}
 		if( $.isFunction(this.options.loaderror) ) {
