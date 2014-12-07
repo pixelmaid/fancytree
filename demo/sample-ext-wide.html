@@ -38,12 +38,14 @@
 			autoScroll: true,
 			checkbox: true,
 			source: {url: "ajax-tree-local.json"},
+			toggleEffect: { effect: "blind", options: {direction: "vertical", scale: "box"}, duration: 200 },
+			// toggleEffect: { effect: "drop", options: {direction: "left"}, duration: 400 },
+			// toggleEffect: false,
 			wide: {
 				// iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
 				// iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
 				// levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
 			},
-			// toggleEffect: false,
 			lazyLoad: function(event, data) {
 				data.result = {url: "ajax-sub2.json"}
 			}
@@ -72,6 +74,13 @@
 		// 		$("#tree2").fancytree("getTree").wideUpdate();
 		// 	}
 		// });
+		addSampleButton({
+			label: "destroy",
+			newline: false,
+			code: function(){
+				$("#tree").fancytree("destroy");
+			}
+		});
 
 	});
 </script>

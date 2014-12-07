@@ -461,29 +461,6 @@ table.fancytree-ext-columnview .fancytree-has-children span.fancytree-cv-right:h
 /*------------------------------------------------------------------------------
  * 'wide' extension
  *----------------------------------------------------------------------------*/
-/*  original
-
-// ul.fancytree-container span.fancytree-node >span,
-ul.fancytree-ext-wide span.fancytree-node >span {
-	position: relative;
-	z-index: 2;
-}
-// ul.fancytree-container span.fancytree-node span.fancytree-title,
-ul.fancytree-ext-wide span.fancytree-node span.fancytree-title {
-	position: relative;
-	z-index: 1;
-	width: 100%;
-	padding-left: 503px;
-	margin-left: -500px;
-
-// 	cursor: pointer;
-// 	position: absolute;
-// 	left: 0px;
-// //	-moz-user-select: none;
-// 	box-sizing: border-box;
-}
-
-*/
 ul.fancytree-ext-wide {
   position: relative;
   min-width: 100%;
