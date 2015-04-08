@@ -19,8 +19,8 @@
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version @VERSION
- * @date @DATE
+ * @version 2.8.2-0
+ * @date 2015-04-08T16:34
  */
 
 // To keep the global namespace clean, we wrap everything in a closure
