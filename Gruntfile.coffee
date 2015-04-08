@@ -376,13 +376,14 @@ module.exports = (grunt) ->
       "qunit:develop"
   ]
 
-  grunt.registerTask "sauce", ["connect:sauce", "saucelabs-qunit"]
-  if parseInt(process.env.TRAVIS_PULL_REQUEST, 10) > 0
+  grunt.registerTask "travis", ["test"]
+  #grunt.registerTask "sauce", ["connect:sauce", "saucelabs-qunit"]
+  #if parseInt(process.env.TRAVIS_PULL_REQUEST, 10) > 0
       # saucelab keys do not work on forks
       # http://support.saucelabs.com/entries/25614798
-      grunt.registerTask "travis", ["test"]
-  else
-      grunt.registerTask "travis", ["test", "sauce"]
+      # grunt.registerTask "travis", ["test"]
+  #else
+      #grunt.registerTask "travis", ["test", "sauce"]
 
   grunt.registerTask "default", ["test"]
 
