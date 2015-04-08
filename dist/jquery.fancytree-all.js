@@ -7,8 +7,8 @@
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 /** Core Fancytree module.
@@ -1126,7 +1126,7 @@ FancytreeNode.prototype = /** @lends FancytreeNode# */{
 			this.parent.expanded = false;
 		} else {
 			pos = $.inArray(this, this.parent.children);
-			_assert(pos >= 0);
+			_assert(pos >= 0, "invalid source parent");
 			this.parent.children.splice(pos, 1);
 		}
 		// Remove from source DOM parent
@@ -1145,13 +1145,13 @@ FancytreeNode.prototype = /** @lends FancytreeNode# */{
 			case "before":
 				// Insert this node before target node
 				pos = $.inArray(targetNode, targetParent.children);
-				_assert(pos >= 0);
+				_assert(pos >= 0, "invalid target parent");
 				targetParent.children.splice(pos, 0, this);
 				break;
 			case "after":
 				// Insert this node after target node
 				pos = $.inArray(targetNode, targetParent.children);
-				_assert(pos >= 0);
+				_assert(pos >= 0, "invalid target parent");
 				targetParent.children.splice(pos+1, 0, this);
 				break;
 			default:
@@ -1919,7 +1919,7 @@ Fancytree.prototype = /** @lends Fancytree# */{
 			isMissing = required && this.ext[name] == null,
 			badOrder = !isMissing && before != null && (before !== isBefore);
 
-		_assert(thisName && thisName !== name);
+		_assert(thisName && thisName !== name, "invalid or same name");
 
 		if( isMissing || badOrder ){
 			if( !message ){
@@ -2523,7 +2523,7 @@ $.extend(Fancytree.prototype,
 	 */
 	nodeKeydown: function(ctx) {
 		// TODO: return promise?
-		var matchNode, stamp, res,
+		var matchNode, stamp, res, focusNode,
 			event = ctx.originalEvent,
 			node = ctx.node,
 			tree = ctx.tree,
@@ -2540,9 +2540,12 @@ $.extend(Fancytree.prototype,
 
 		// Set focus to active (or first node) if no other node has the focus yet
 		if( !node ){
-			(this.getActiveNode() || this.getFirstChild()).setFocus();
-			node = ctx.node = this.focusNode;
-			node.debug("Keydown force focus on active node");
+			focusNode = (this.getActiveNode() || this.getFirstChild());
+			if (focusNode){
+				focusNode.setFocus();
+				node = ctx.node = this.focusNode;
+				node.debug("Keydown force focus on active node");
+			}
 		}
 
 		if( opts.quicksearch && clean && /\w/.test(whichChar) && !$target.is(":input:enabled") ) {
@@ -2649,7 +2652,7 @@ $.extend(Fancytree.prototype,
 			source = new $.Deferred();
 			dfd.done(function (data, textStatus, jqXHR) {
 				var errorObj, res;
-				if(typeof data === "string"){
+				if(this.dataType === "json" && typeof data === "string"){
 					$.error("Ajax request returned a string (did you get the JSON dataType wrong?).");
 				}
 				// postProcess is similar to the standard ajax dataFilter hook,
@@ -2691,7 +2694,7 @@ $.extend(Fancytree.prototype,
 		}
 		if($.isFunction(source.promise)){
 			// `source` is a deferred, i.e. ajax request
-			_assert(!node.isLoading());
+			_assert(!node.isLoading(), "recursive load");
 			// node._isLoading = true;
 			tree.nodeSetStatus(ctx, "loading");
 
@@ -2756,7 +2759,7 @@ $.extend(Fancytree.prototype,
 		// FT.debug("nodeRemoveChild()", node.toString(), childNode.toString());
 
 		if( children.length === 1 ) {
-			_assert(childNode === children[0]);
+			_assert(childNode === children[0], "invalid single child");
 			return this.nodeRemoveChildren(ctx);
 		}
 		if( this.activeNode && (childNode === this.activeNode || this.activeNode.isDescendantOf(childNode))){
@@ -2769,7 +2772,7 @@ $.extend(Fancytree.prototype,
 		this.nodeRemoveMarkup(subCtx);
 		this.nodeRemoveChildren(subCtx);
 		idx = $.inArray(childNode, children);
-		_assert(idx >= 0);
+		_assert(idx >= 0, "invalid child");
 		// Unlink to support GC
 		childNode.visit(function(n){
 			n.parent = null;
@@ -3119,6 +3122,8 @@ $.extend(Fancytree.prototype,
 			nodeTitle = "<span " + role + " class='fancytree-title'" + id + tooltip + tabindex + ">" + node.title + "</span>";
 		}
 		ares.push(nodeTitle);
+		ares.push("<span role='button' class='fancytree-icon fancytree-constraint'></span>");
+
 		// Note: this will trigger focusout, if node had the focus
 		//$(node.span).html(ares.join("")); // it will cleanup the jQuery data currently associated with SPAN (if any), but it executes more slowly
 		node.span.innerHTML = ares.join("");
@@ -3301,6 +3306,7 @@ $.extend(Fancytree.prototype,
 				ctx.tree._triggerNodeEvent("deactivate", node, ctx.originalEvent);
 			}
 		}
+		return _getResolvedPromise(node);
 	},
 	/** Expand or collapse node, return Deferred.promise.
 	 *
@@ -4071,7 +4077,7 @@ $.extend($.ui.fancytree,
 	/** @lends Fancytree_Static# */
 	{
 	/** @type {string} */
-	version: "2.8.1",      // Set to semver by 'grunt release'
+	version: "@VERSION",      // Set to semver by 'grunt release'
 	/** @type {string} */
 	buildType: "production", // Set to 'production' by 'grunt build'
 	/** @type {int} */
@@ -4135,7 +4141,7 @@ $.extend($.ui.fancytree,
 	error: function(msg){
 		consoleApply("error", arguments);
 	},
-	/** Convert &lt;, &gt;, &amp;, &quot;, &#39;, &#x2F; to the equivalent entitites.
+	/** Convert &lt;, &gt;, &amp;, &quot;, &#39;, &#x2F; to the equivalent entities.
 	 *
 	 * @param {string} s
 	 * @returns {string}
@@ -4433,8 +4439,8 @@ $.extend($.ui.fancytree,
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 // To keep the global namespace clean, we wrap everything in a closure
@@ -4609,8 +4615,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -5061,8 +5067,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -5106,13 +5112,14 @@ function _initDragAndDrop(tree) {
 			connectToFancytree: true,
 			// Let source tree create the helper element
 			helper: function(event) {
-				var $helper,
-					sourceNode = $.ui.fancytree.getNode(event.target),
-					$nodeTag = $(sourceNode.span);
+				var $helper, $nodeTag,
+					sourceNode = $.ui.fancytree.getNode(event.target);
+
 				if(!sourceNode){
-					// DT issue 211: might happen, if dragging a table *header*
+					// #405, DT issue 211: might happen, if dragging a table *header*
 					return "<div>ERROR?: helper requested but sourceNode not found</div>";
 				}
+				$nodeTag = $(sourceNode.span);
 				// Only event and node argument is available
 				$helper = $("<div class='fancytree-drag-helper'><span class='fancytree-drag-helper-img' /></div>")
 					.css({zIndex: 3, position: "relative"}) // so it appears above ext-wide selection bar
@@ -5289,11 +5296,13 @@ $.ui.fancytree.registerExtension({
 			tree.$container.on("mousedown", function(event){
 				if( !tree.hasFocus() && ctx.options.dnd.focusOnClick ) {
 					var node = $.ui.fancytree.getNode(event);
-					node.debug("Re-enable focus that was prevented by jQuery UI draggable.");
-					// node.setFocus();
-					// $(node.span).closest(":tabbable").focus();
-					// $(event.target).trigger("focus");
-					// $(event.target).closest(":tabbable").trigger("focus");
+					if (node){
+						node.debug("Re-enable focus that was prevented by jQuery UI draggable.");
+						// node.setFocus();
+						// $(node.span).closest(":tabbable").focus();
+						// $(event.target).trigger("focus");
+						// $(event.target).closest(":tabbable").trigger("focus");
+					}
 					setTimeout(function() { // #300
 						$(event.target).closest(":tabbable").focus();
 					}, 10);
@@ -5614,8 +5623,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -5922,8 +5931,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -6097,8 +6106,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -6230,8 +6239,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -6432,8 +6441,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -6796,8 +6805,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -7157,8 +7166,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {
@@ -7234,8 +7243,8 @@ $.ui.fancytree.registerExtension({
  * Released under the MIT license
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
- * @version 2.8.1
- * @date 2015-03-01T20:28
+ * @version @VERSION
+ * @date 2015-04-08T16:06
  */
 
 ;(function($, window, document, undefined) {

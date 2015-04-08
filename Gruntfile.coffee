@@ -390,7 +390,7 @@ module.exports = (grunt) ->
   grunt.registerTask "build", [
       "less:development"
       "test"
-      "jsdoc:build"
+      #"jsdoc:build"
       "docco:docs"
       "clean:build"
       "copy:build"

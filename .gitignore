@@ -1,6 +1,7 @@
 /.settings
 /archive
 /build
+/bower_components
 /test/triage
 /doc/annotated-src
 /doc/jsdoc
