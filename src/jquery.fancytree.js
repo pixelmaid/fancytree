@@ -3065,6 +3065,33 @@ $.extend(Fancytree.prototype,
 		
 		ares.push("<span role='button' id='constraint' class='fancytree-icon fancytree-constraint'></span>");
 
+		// folder or doctype icon
+		role = aria ? " role='img'" : "";
+		if( iconSrc === true || (iconSrc !== false && opts.icons !== false) ) {
+			// opts.icons defines the default behavior, node.icon == true/false can override this
+			if ( iconSrc && typeof iconSrc === "string" ) {
+				// node.icon is an image url
+				iconSrc = (iconSrc.charAt(0) === "/") ? iconSrc : ((opts.imagePath || "") + iconSrc);
+				ares.push("<img  id='visible' src='" + iconSrc + "' class='fancytree-icon' alt='' />");
+			} else {
+				// See if node.iconClass or opts.iconClass() define a class name
+				iconSpanClass = (opts.iconClass && opts.iconClass.call(tree, node, ctx)) || node.data.iconclass || null;
+				if( iconSpanClass ) {
+					ares.push("<span " + role + " class='fancytree-custom-icon " + iconSpanClass +  "'></span>");
+				} else {
+					ares.push("<span id='visible'"+ role + " class='fancytree-icon'></span>");
+				}
+			}
+		}
+		// Checkbox mode
+		if( opts.checkbox && node.hideCheckbox !== true && !node.isStatusNode() ) {
+			if(aria){
+				ares.push("<span role='checkbox' class='fancytree-checkbox'></span>");
+			}else{
+				ares.push("<span class='fancytree-checkbox'></span>");
+			}
+		}
+
 		if( level < opts.minExpandLevel ) {
 			if( !node.lazy ) {
 				node.expanded = true;
@@ -3084,33 +3111,7 @@ $.extend(Fancytree.prototype,
 				ares.push("<span class='fancytree-expander'></span>");
 			}
 		}
-		// Checkbox mode
-		if( opts.checkbox && node.hideCheckbox !== true && !node.isStatusNode() ) {
-			if(aria){
-				ares.push("<span role='checkbox' class='fancytree-checkbox'></span>");
-			}else{
-				ares.push("<span class='fancytree-checkbox'></span>");
-			}
-		}
-		// folder or doctype icon
-		role = aria ? " role='img'" : "";
-		if( iconSrc === true || (iconSrc !== false && opts.icons !== false) ) {
-			// opts.icons defines the default behavior, node.icon == true/false can override this
-			if ( iconSrc && typeof iconSrc === "string" ) {
-				// node.icon is an image url
-				iconSrc = (iconSrc.charAt(0) === "/") ? iconSrc : ((opts.imagePath || "") + iconSrc);
-				ares.push("<img  id='visible' src='" + iconSrc + "' class='fancytree-icon' alt='' />");
-			} else {
-				// See if node.iconClass or opts.iconClass() define a class name
-				iconSpanClass = (opts.iconClass && opts.iconClass.call(tree, node, ctx)) || node.data.iconclass || null;
-				if( iconSpanClass ) {
-					ares.push("<span " + role + " class='fancytree-custom-icon " + iconSpanClass +  "'></span>");
-				} else {
-					ares.push("<span id='visible'"+ role + " class='fancytree-icon'></span>");
-				}
-			}
-		}
-
+		
 		// node title
 		nodeTitle = "";
 		if ( opts.renderTitle ){
