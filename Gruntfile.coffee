@@ -129,6 +129,13 @@ module.exports = (grunt) ->
                 port: 8080
                 base: "./"
                 keepalive: false
+        sauce:
+            options:
+                hostname: "localhost"
+                port: 9999
+                base: ""
+                keepalive: false
+
     copy:
         build: # copy production files to build folder
             files: [{
