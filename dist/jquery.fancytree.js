@@ -8,7 +8,7 @@
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T18:22
+ * @date 2015-04-08T19:30
  */
 
 /** Core Fancytree module.
@@ -3062,6 +3062,9 @@ $.extend(Fancytree.prototype,
 		}
 		// connector (expanded, expandable or simple)
 		// TODO: optimize this if clause
+		
+		ares.push("<span role='button' id='constraint' class='fancytree-icon fancytree-constraint'></span>");
+
 		if( level < opts.minExpandLevel ) {
 			if( !node.lazy ) {
 				node.expanded = true;
@@ -3122,7 +3125,6 @@ $.extend(Fancytree.prototype,
 			nodeTitle = "<span " + role + " class='fancytree-title'" + id + tooltip + tabindex + ">" + node.title + "</span>";
 		}
 		ares.push(nodeTitle);
-		ares.push("<span role='button' id='constraint' class='fancytree-icon fancytree-constraint'></span>");
 
 		// Note: this will trigger focusout, if node had the focus
 		//$(node.span).html(ares.join("")); // it will cleanup the jQuery data currently associated with SPAN (if any), but it executes more slowly
