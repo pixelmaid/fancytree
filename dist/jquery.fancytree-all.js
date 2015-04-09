@@ -8,7 +8,7 @@
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 /** Core Fancytree module.
@@ -3051,6 +3051,7 @@ $.extend(Fancytree.prototype,
 			level = node.getLevel(),
 			ares = [],
 			iconSrc = node.data.icon;
+			list_type = node.data.list;
 
 		if(title !== undefined){
 			node.title = title;
@@ -3126,7 +3127,9 @@ $.extend(Fancytree.prototype,
 			nodeTitle = "<span " + role + " class='fancytree-title'" + id + tooltip + tabindex + ">" + node.title + "</span>";
 		}
 		ares.push(nodeTitle);
-
+		if(list_type){
+			ares.push("<span id = 'list' class='sampler'></span>");
+		}
 		// Note: this will trigger focusout, if node had the focus
 		//$(node.span).html(ares.join("")); // it will cleanup the jQuery data currently associated with SPAN (if any), but it executes more slowly
 		node.span.innerHTML = ares.join("");
@@ -4443,7 +4446,7 @@ $.extend($.ui.fancytree,
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 // To keep the global namespace clean, we wrap everything in a closure
@@ -4619,7 +4622,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -5071,7 +5074,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -5627,7 +5630,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -5935,7 +5938,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -6110,7 +6113,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -6243,7 +6246,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -6445,7 +6448,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -6809,7 +6812,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -7170,7 +7173,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {
@@ -7247,7 +7250,7 @@ $.ui.fancytree.registerExtension({
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T19:33
+ * @date 2015-04-08T22:25
  */
 
 ;(function($, window, document, undefined) {

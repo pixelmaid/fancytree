@@ -3051,6 +3051,7 @@ $.extend(Fancytree.prototype,
 			level = node.getLevel(),
 			ares = [],
 			iconSrc = node.data.icon;
+			list_type = node.data.list;
 
 		if(title !== undefined){
 			node.title = title;
@@ -3126,7 +3127,9 @@ $.extend(Fancytree.prototype,
 			nodeTitle = "<span " + role + " class='fancytree-title'" + id + tooltip + tabindex + ">" + node.title + "</span>";
 		}
 		ares.push(nodeTitle);
-
+		if(list_type){
+			ares.push("<span id = 'list' class='sampler'></span>");
+		}
 		// Note: this will trigger focusout, if node had the focus
 		//$(node.span).html(ares.join("")); // it will cleanup the jQuery data currently associated with SPAN (if any), but it executes more slowly
 		node.span.innerHTML = ares.join("");
