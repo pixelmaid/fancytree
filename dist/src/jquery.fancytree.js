@@ -8,7 +8,7 @@
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T22:32
+ * @date 2015-04-08T22:38
  */
 
 /** Core Fancytree module.
@@ -3073,14 +3073,14 @@ $.extend(Fancytree.prototype,
 			if ( iconSrc && typeof iconSrc === "string" ) {
 				// node.icon is an image url
 				iconSrc = (iconSrc.charAt(0) === "/") ? iconSrc : ((opts.imagePath || "") + iconSrc);
-				ares.push("<img  id='visible' src='" + iconSrc + "' class='fancytree-icon' alt='' />");
+				ares.push("<img  id='visible' src='" + iconSrc + "' class='fancytree-icon fancytree-visible' alt='' />");
 			} else {
 				// See if node.iconClass or opts.iconClass() define a class name
 				iconSpanClass = (opts.iconClass && opts.iconClass.call(tree, node, ctx)) || node.data.iconclass || null;
 				if( iconSpanClass ) {
 					ares.push("<span " + role + " class='fancytree-custom-icon " + iconSpanClass +  "'></span>");
 				} else {
-					ares.push("<span id='visible'"+ role + " class='fancytree-icon'></span>");
+					ares.push("<span id='visible'"+ role + " class='fancytree-icon fancytree-visible'></span>");
 				}
 			}
 		}
@@ -3128,7 +3128,7 @@ $.extend(Fancytree.prototype,
 		}
 		ares.push(nodeTitle);
 		if(listType){
-			ares.push("<span id = 'list' class='sampler'></span>");
+			ares.push("<span id = 'list' class='fancytree-icon sampler'></span>");
 		}
 		// Note: this will trigger focusout, if node had the focus
 		//$(node.span).html(ares.join("")); // it will cleanup the jQuery data currently associated with SPAN (if any), but it executes more slowly

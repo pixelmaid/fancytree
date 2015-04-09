@@ -9,7 +9,7 @@
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T22:32
+ * @date 2015-04-08T22:38
  */
 
 ;(function($, window, document, undefined) {
