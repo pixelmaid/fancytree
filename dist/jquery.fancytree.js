@@ -8,7 +8,7 @@
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T22:25
+ * @date 2015-04-08T22:32
  */
 
 /** Core Fancytree module.
@@ -3050,8 +3050,8 @@ $.extend(Fancytree.prototype,
 			aria = opts.aria,
 			level = node.getLevel(),
 			ares = [],
-			iconSrc = node.data.icon;
-			list_type = node.data.list;
+			iconSrc = node.data.icon,
+			listType = node.data.list;
 
 		if(title !== undefined){
 			node.title = title;
@@ -3127,7 +3127,7 @@ $.extend(Fancytree.prototype,
 			nodeTitle = "<span " + role + " class='fancytree-title'" + id + tooltip + tabindex + ">" + node.title + "</span>";
 		}
 		ares.push(nodeTitle);
-		if(list_type){
+		if(listType){
 			ares.push("<span id = 'list' class='sampler'></span>");
 		}
 		// Note: this will trigger focusout, if node had the focus
