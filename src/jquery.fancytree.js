@@ -3051,7 +3051,7 @@ $.extend(Fancytree.prototype,
 			level = node.getLevel(),
 			ares = [],
 			iconSrc = node.data.icon,
-			listType = node.data.list;
+			listType = node.data.list,
 			constraintType = node.data.constraint;
 
 		if(title !== undefined){
@@ -3131,7 +3131,7 @@ $.extend(Fancytree.prototype,
 		}
 		ares.push(nodeTitle);
 		ares.push("<span role='button' id='select_button' class='fancytree-icon fancytree-select-button'></span>");
-)
+
 		if(listType){
 			ares.push("<span id = 'list' class='fancytree-icon sampler'></span>");
 		}
