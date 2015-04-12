@@ -3130,11 +3130,12 @@ $.extend(Fancytree.prototype,
 			nodeTitle = "<span " + role + " class='fancytree-title'" + id + tooltip + tabindex + ">" + node.title + "</span>";
 		}
 		ares.push(nodeTitle);
-		ares.push("<span role='button' id='select_button' class='fancytree-icon fancytree-select-button'></span>");
 
 		if(listType){
 			ares.push("<span id = 'list' class='fancytree-icon sampler'></span>");
 		}
+		ares.push("<span role='button' id='select_button' class='fancytree-icon fancytree-select-button'></span>");
+
 		// Note: this will trigger focusout, if node had the focus
 		//$(node.span).html(ares.join("")); // it will cleanup the jQuery data currently associated with SPAN (if any), but it executes more slowly
 		node.span.innerHTML = ares.join("");
