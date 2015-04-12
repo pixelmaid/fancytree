@@ -8,7 +8,7 @@
  * https://github.com/mar10/fancytree/wiki/LicenseInfo
  *
  * @version 2.8.2-0
- * @date 2015-04-08T22:38
+ * @date 2015-04-12T14:18
  */
 
 /** Core Fancytree module.
@@ -3052,6 +3052,7 @@ $.extend(Fancytree.prototype,
 			ares = [],
 			iconSrc = node.data.icon,
 			listType = node.data.list;
+			constraintType = node.data.constraint;
 
 		if(title !== undefined){
 			node.title = title;
@@ -3064,7 +3065,9 @@ $.extend(Fancytree.prototype,
 		// connector (expanded, expandable or simple)
 		// TODO: optimize this if clause
 		
-		ares.push("<span role='button' id='constraint' class='fancytree-icon fancytree-constraint'></span>");
+		if(!constraintType){
+			ares.push("<span role='button' id='constraint' class='fancytree-icon fancytree-constraint'></span>");
+		}
 
 		// folder or doctype icon
 		role = aria ? " role='img'" : "";
@@ -3127,6 +3130,8 @@ $.extend(Fancytree.prototype,
 			nodeTitle = "<span " + role + " class='fancytree-title'" + id + tooltip + tabindex + ">" + node.title + "</span>";
 		}
 		ares.push(nodeTitle);
+		ares.push("<span role='button' id='select_button' class='fancytree-icon fancytree-select-button'></span>");
+)
 		if(listType){
 			ares.push("<span id = 'list' class='fancytree-icon sampler'></span>");
 		}
